@@ -3,7 +3,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
-from config import Config
 from flask_dotenv import DotEnv
 import logging
 from logging.handlers import SMTPHandler
@@ -19,10 +18,12 @@ db = SQLAlchemy(aplication)
 env = DotEnv()
 env.init_app(aplication, env_file=os.path.join(
     os.getcwd(), '.env'), verbose_mode=True)
+from config import Config
 aplication.config.from_object(Config)
-mail = Mail(aplication)
 migrate = Migrate(aplication, db)
 login = LoginManager(aplication)
 login.login_view = 'login'
+mail = Mail(aplication)
+
 
 from app import views, models
