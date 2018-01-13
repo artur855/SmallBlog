@@ -1,0 +1,45 @@
+{%extends "html/base.html" %}
+{% block content %}
+	<div class="container">
+		<div class="page-header">
+			<h2>User Profile</h2>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Email Address</div>
+					<div class="panel-body">{{current_user.email}}</div>
+				</div>
+			
+			<div class="panel panel-info">
+				<div class="panel-heading">Account Actions</div>
+					<div class="panel-body"><a href="{{url_for('edit', username=current_user.username)}}">Change user information</a></div>
+					<div class="panel-body"><a href="">Change email</a></div>
+				
+				{% if not current_user.email_confirmed %}
+					<div class="panel-body"><a href="">Resend confirmation email</a></div>
+				{% endif %}
+				<div class="panel-body"><a href="{{url_for('change_user_password', username=current_user.username)}}">Change password</a></div>
+				{% if current_user.email %}
+				<div class="panel-body"><a href="{{url_for('reset')}}">Send email to reset password</a></div>
+				{% endif %}
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">Statistics</div>
+				<div class="panel-body">Member since: {{current_user.registered_on.strftime("%A %B %d, %Y ")}}</div>
+				{% if current_user.last_seen %}
+					<div class="panel-body">Last logged in: {{current_user.last_seen.strftime("%A %B %d, %Y")}}</div>
+				{% else %}
+					<div>First time logged in!</div>
+				{% endif %}
+				{% if current_user.email_confirmed %}
+					<div class="panel-body">Email confirmed on: {{ current_user.email_confirmed_on.strftime("%A %B %d, %Y ")}}</div>
+				{% else %}
+					<div class="panel-body">Email has not been confirmed yet!!</div>
+				{% endif %}
+			</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

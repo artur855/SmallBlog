@@ -1,0 +1,17 @@
+{% extends "html/base.html" %}
+{% block content %}
+<div class="container">
+	<div>
+		<h3>Input your email to receive a new email with a confirmation link</h3>
+	<div></div>
+	<form method="post">
+		{{form.hidden_tag()}}
+		<div class="form-group">
+		{{form.email(class='form-control', placeholder='Email to resent confirmation link')}}
+		</div>
+		<div class="form-group">
+		{{form.submit(class='btn btn-default', type='submit')}}
+		</div>
+	</form>
+</div>
+{% endblock %}

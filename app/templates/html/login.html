@@ -1,0 +1,53 @@
+
+        {% extends "html/base.html" %}
+        {% block content %}
+            
+            <div class="container">
+                {% for info_email in get_flashed_messages(category_filter=["info-email"]) %}
+                    <p class=" alert alert-info alert-dismissable fade in">{{ info_email }}<a href="{{url_for('resend')}}" class="alert-link"> Click here.</a> </p>
+                {% endfor %}
+                <div class="page-header">
+                    <h1>Sign In</h1>
+                    <br>
+                    <form class="form-horizontal" action="" method="post">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                            {{form.username(class="form-control",width='100',type='text',placeholder='Username', size=32)}}
+                            
+                        </div>
+                            {% for error in form.username.errors%}
+                                <span style='color: red'>[{{error}}]</span>
+                            {%endfor%}
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
+                                {{form.password(class='form-control',type='password',placeholder='Password',size=32) }}
+                                </div>
+                            
+                                {% for error in form.password.errors%}
+                                    <span style='color: red'>[{{error}}]</span>
+                                    {%endfor%}
+                                <br>
+                                <div><p>{{ form.remember_me(class='form-check-input')}} {{form.remember_me.label(class='form-check-label')}}</p>
+                                
+                                <p>
+
+                                {{form.submit(class='btn btn-success', type='submit')}}</p>
+                                </div>
+                            </form>
+                            <div>
+                                <p>New User? <a href="{{url_for('register')}}">Click to Register!</a></p>
+                                <p>Forgot or lost your password? <a href="{{url_for('reset')}}">Click here to get a new one!</a></p>
+                                <p>You have already cadastred but didn't received confirmation email? <a href="{{url_for('resend')}}">Click here!</a></p>
+                                <p><button type="button" class="btn btn-default"><a href="{{url_for('oauth_authorize', provider='facebook') }}" target="">Login with Facebook</a></button></p>
+                                <p><a href="{{url_for('oauth_authorize', provider='twitter') }}">Login with Twitter</a></p>
+                                <p><a href="{{url_for('oauth_authorize', provider='google') }}">Login with Google</a></p>
+                            </div>
+                    </div>
+                    </div>
+                {% endblock %}
+        
