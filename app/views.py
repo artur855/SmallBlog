@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, url_for, request
+from flask import render_template, flash, redirect, session, url_for, request, current_app
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 from sqlalchemy.exc import IntegrityError
@@ -9,6 +9,8 @@ from app.forms import *
 from .models import *
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.urls import url_parse
+from urllib import parse
+from urllib.parse import urljoin
 from datetime import datetime
 from threading import Thread
 
@@ -115,19 +117,21 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password', 'warning')
-            return redirect(url_for('login'))
-        elif not user.email_confirmed:
-            flash(Markup(
-                "Your have to access the confirmation link that was sent to your email. You didn't received the link?"), 'info-email')
-            return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
+        try:
+            user = User.query.filter_by(username=form.username.data).first()
+            if user is None or not user.check_password(form.password.data):
+                flash('Invalid username or password', 'warning')
+                return redirect(url_for('login'))
+            elif not user.email_confirmed:
+                flash(Markup(
+                    "Your have to access the confirmation link that was sent to your email. You didn't received the link?"), 'info-email')
+                return redirect(url_for('login'))
+            login_user(user, remember=form.remember_me.data)
+            next_page = get_redirect_target()
+            return redirect(next_page)
+        except:
+            flash('A error has occured', 'error')
+
     return render_template('html/login.html', title='Sign in', form=form)
 
 
@@ -426,3 +430,17 @@ def page_not_found(e):
 def internal_error(e):
     db.session.rollback()
     return render_template('html/500.html'), 500
+
+
+def is_safe_url(target):
+    ref_url = parse(request.host_url)
+    test_url = parse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+def get_redirect_target():
+    for target in request.values.get('next'), request.referrer:
+        if not target:
+            continue
+        if is_safe_url(target):
+            return target
