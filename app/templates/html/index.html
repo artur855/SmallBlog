@@ -3,21 +3,49 @@
 
     {% block content %}
     <div class="container">
-        <div class="page-header">
-        <ul class="list-group">
-        {% for post in posts %}
-                <li class="list-group-item">
-                <h2>
-                    <img class="rounded" href = "{{url_for('user', username=post.author.username)}}" style="align: left" src="{{post.author.profile_picture}}" width=50 style="margin-right:15px;">
-                   
-                     {{post.author.username.title()}} says: </h2> 
-                                        
-                    <p>{{post.body}}</p>
-                </li>
-        {% endfor %}
-        </ul>
+        <form method="post" name="post">
+            {{form.hidden_tag()}}
+            <table>
+                <tr>
+                    <td class="form-group">Say something </td>
+                    <td class="form-group">{{form.post(class='form-control', placeholder='Say something...')}}</td>
+                    <td class="form-group">
+                        {% for error in form.post.errors %}
+                        <span style="color:red;">[{{error}}]</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="form-group">{{form.submit(class='btn btn-primary')}}</td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+        <div>
+            <ul class="list-group">
+            {% for post in posts.items %}
+                    <li class="list-group-item">
+                    <h2>
+                        <img class="rounded" href = "{{url_for('user', username=post.author.username)}}" style="align: left" src="{{post.author.profile_picture}}" width=50 style="margin-right:15px;">
+                       
+                         {{post.author.username.title()}} says: </h2> 
+                                            
+                        <p>{{post.body}}</p>
+                    </li>
+            {% endfor %}
+            {% if posts.has_prev %}
+                <a href="{{url_for('index', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
+            {% endif %}
+            {% if posts.has_prev and posts.has_next %}
+            |
+            {% endif %}
+            {% if posts.has_next %}
+                <a href="{{url_for('index', page=posts.next_num)}}">Older posts &gt;&gt;</a>
+            {% endif %}
+            </ul>
         </div>
     </div>
+    {% endblock%}
     
-    {% endblock %}
  

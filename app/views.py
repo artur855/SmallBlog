@@ -13,6 +13,7 @@ from urllib import parse
 from urllib.parse import urljoin
 from datetime import datetime
 from threading import Thread
+from config import POSTS_PER_PAGE
 
 
 @login.user_loader
@@ -20,11 +21,25 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-@aplication.route('/')
-@aplication.route('/index')
+@aplication.route('/', methods=['GET', 'POST'])
+@aplication.route('/index', methods=['GET', 'POST'])
+@aplication.route('/index/<int:page>', methods=['GET', 'POST'])
 @login_required
-def index():
-    return render_template('html/index.html', title='Home Page', posts=Post.query.order_by(Post.timestamp.desc()).all())
+def index(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        try:
+            post = Post(body=form.post.data,
+                        timestamp=datetime.now(), user_id=current_user.id)
+            db.session.add(post)
+            db.session.commit()
+            flash('Your post is now live!', 'success')
+            return redirect(url_for('index'))
+        except:
+            flash('A error has occured', 'error')
+            db.session.rollback()
+    posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False).items
+    return render_template('html/index.html', title='Home Page', form=form, posts=posts)
 
 
 @aplication.route('/logout')
@@ -99,16 +114,19 @@ def edit(username):
 
 @aplication.route('/user/')
 @aplication.route('/user/<username>')
+@aplication.route('/user/<username>/<int:page>')
 @login_required
-def user(username=None):
+def user(username=None, page=1):
     if username == current_user.username or username == None:
-        return render_template('html/user.html', user=current_user)
+        posts = current_user.posts.paginate(page, POSTS_PER_PAGE, False)
+        return render_template('html/user.html', user=current_user, posts=posts)
     else:
         user = User.query.filter_by(username=username).first()
         if not user:
             flash('User {} not found.'.format(username), 'error')
             redirect(url_for('index'))
-        return render_template('html/user.html', user=user)
+        posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
+        return render_template('html/user.html', user=user, posts=posts)
 
 
 @aplication.route('/login', methods=['GET', 'POST'])

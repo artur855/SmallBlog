@@ -11,6 +11,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
+class PostForm(FlaskForm):
+    post = TextAreaField('Post', validators=[DataRequired()])
+    submit = SubmitField('Send post')
+
+
 class ProfileForm(FlaskForm):
     username = StringField('Change Username')
     about_me = TextAreaField('About Me', validators=[Length(min=0, max=300)])

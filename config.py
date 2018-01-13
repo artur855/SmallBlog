@@ -4,6 +4,9 @@ from app import aplication
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
+POSTS_PER_PAGE = 3
+
+
 class Config:
     OAUTH_CREDENTIALS = ast.literal_eval(
         aplication.config['OAUTH_CREDENTIALS'])
