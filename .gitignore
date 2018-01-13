@@ -3,6 +3,8 @@
 
 # Distribution / packaging
 bin/
+__pycache__/
+app/__pycache__/
 build/
 develop-eggs/
 dist/
@@ -20,4 +22,4 @@ var/
 env
 .env
 venv
-__pycache__
+
