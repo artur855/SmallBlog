@@ -281,6 +281,20 @@ def send_email(subject, recipients, text_body, html_body):
 @aplication.route('/reset', methods=['GET', 'POST'])
 def reset():
     form = EmailForm()
+    if current_user.is_authenticated:
+        try:
+            if current_user.email_confirmed:
+                send_password_reset_email(current_user.email)
+                flash('Please check your email for a password reset link', 'success')
+                return redirect(url_for('profile', username=current_user.username))
+            else:
+                flash(
+                    'Your email address must be confirmed before changing the password!', 'error')
+            return redirect(url_for('profile', username=current_user.username))
+        except:
+            flash('A error has occured', 'error')
+            return redirect(url_for('profile', username=current_user.username))
+
     if form.validate_on_submit():
         try:
             user = User.query.filter_by(email=form.email.data).first()
@@ -289,8 +303,8 @@ def reset():
             return render_template('html/password_reset_email.html', form=form)
 
         if user.email_confirmed:
-            flash('Please check your email for a password reset link', 'success')
             send_password_reset_email(user.email)
+            flash('Please check your email for a password reset link', 'success')
 
         else:
             flash(
