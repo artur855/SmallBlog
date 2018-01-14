@@ -380,6 +380,26 @@ def oauth_authorize(provider):
     return oauth.authorize()
 
 
+@aplication.route('/delete/<int:id>')
+@login_required
+def delete(id):
+    try:
+        post = Post.query.get(id)
+        if not post:
+            flash('Post not found', 'error')
+            return redirect(url_for('index'))
+        if post.author.id != current_user.id:
+            flash("You cannot delete a post you don't own.", 'error')
+            return redirect(url_for('index'))
+        db.session.delete(post)
+        db.session.commit()
+        flash('Your post has been deleted.', 'success')
+        return redirect(url_for('index'))
+    except:
+        db.session.rollback()
+        flash('A error has occured.', 'error')
+
+
 @aplication.route('/callback/<provider>')
 def oauth_callback(provider):
 
