@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <meta http-equiv="refresh" content=""> -->
         <meta name="description" content="Site to learn full-stack development and git">
         <meta author="author" content="Arthur Gonçalves">
         <link rel="icon" href="{{url_for('static', filename='icons/favicon.ico')}}">
@@ -70,12 +71,11 @@
                     {% for message in get_flashed_messages(category_filter=["success"])%}
                         <p class=" alert alert-success alert-dismissable fade in">{{ message }}</p>
                     {% endfor %}
-
         </div>
         
-    
+    <div class="container">
     {% block content %}{% endblock %}
-    
+    </div>
     <footer style="padding-bottom:10px;">
         <div class="container">
             <span class="text-muted">Admin: Arthur Gonçalves Azevedo</span><br>

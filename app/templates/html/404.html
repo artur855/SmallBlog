@@ -1,21 +1,16 @@
- 
-		{% extends "html/base.html" %}
-		{% block content %}
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
+{% extends "html/base.html" %}
+	{% block content %}
+		<div class="row">
+			<div class="col-md-12">
+				<div>
+					<h1>ERROR</h1>
+					<h2>404 NOT FOUND</h2>
 					<div>
-						<h1>ERROR</h1>
-						<h2>404 NOT FOUND</h2>
-						<div>
-							<a class="btn btn-primary btn-lg" href="{{url_for('index')}}"><i class="glyphicon glyphicon-home">Home</i></a>
-							<br>
-						</div>
+						<a class="btn btn-primary btn-lg" href="{{url_for('index')}}"><i class="glyphicon glyphicon-home">Home</i></a>
+						<br>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
-		{% endblock %}
+	{% endblock %}
  

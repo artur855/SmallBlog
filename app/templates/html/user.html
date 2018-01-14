@@ -1,10 +1,8 @@
  
 {% extends "html/base.html" %}
 {% block content %}
-<div class="container">
-   
     <div class="page-header">
-    	<img src="{{ user.profile_picture }}" width="100" height="100">
+        <img src="{{ user.profile_picture }}" width="100" height="100">
         <br>
         <br>
         {% if current_user == user %}
@@ -15,35 +13,26 @@
             <a href="{{url_for('unfollow', username=user.username)}}">Unfollow</a>
         {% endif %}
         <br>
-        <br>
-      
+        <br>  
         <p>{{ user.followers.count() }} followers 
-
-            
-
-
-
         </p>
-        <p>About me: {{user.about_me}}</p>
-        <p>Last seen: {{user.last_seen}}</p>
-        <h1>{{ user.username }}'s Profile</h1>
-        {% for post in user.posts %}
-            {% filter markdown %}
-	        {{ post.body }}
-            {% endfilter %}
-	        <p>{{ post.timestamp }}</p>
-            <p><a class="btn btn-warning" href="{{url_for('delete', id=current_user.id)}}">Delete</a></p>
-        {% endfor %}
-        {% if posts.has_prev %}
-                <a href="{{url_for('index', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
-        {% endif %}
-        {% if posts.has_prev and posts.has_next %}
-            |
-        {% endif %}
-        {% if posts.has_next %}
-                <a href="{{url_for('index', page=posts.next_num)}}">Older posts &gt;&gt;</a>
-        {% endif %}
     </div>
-</div>
+    <p>About me: {{user.about_me}}</p>
+    <p>Last seen: {{user.last_seen}}</p>
+    <h1>{{ user.username }}'s Profile</h1>
+    {% for post in user.posts %}
+        {{ post.body|markdown }}
+        <p>{{ post.timestamp }}</p>
+        <p><a class="btn btn-warning" href="{{url_for('delete', id=current_user.id)}}">Delete</a></p>
+    {% endfor %}
+    {% if posts.has_prev %}
+            <a href="{{url_for('user', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
+    {% endif %}
+    {% if posts.has_prev and posts.has_next %}
+        |
+    {% endif %}
+    {% if posts.has_next %}
+            <a href="{{url_for('user', page=posts.next_num)}}">Older posts &gt;&gt;</a>
+    {% endif %}
 {% endblock %}
  
