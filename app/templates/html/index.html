@@ -19,12 +19,7 @@
         <ul class="list-group">
         {% for post in posts.items %}
                 <li class="list-group-item">
-                <h2>
-                    <img class="rounded" href = "{{url_for('user', username=post.author.username)}}" style="align: left" src="{{post.author.profile_picture}}" width=50 style="margin-right:15px;">
-                   
-                     {{post.author.username.title()}} says: </h2> 
-                                        
-                    <p>{{post.body|markdown}}</p>
+                {% include 'html/post.html' %}
                 </li>
         {% endfor %}
         {% if posts.has_prev %}
