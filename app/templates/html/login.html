@@ -8,12 +8,13 @@
                 {% endfor %}
                 <div class="page-header">
                     <h1>Sign In</h1>
+                    <hr>
                     <br>
-                    <form class="form-horizontal" action="" method="post">
+                    <form action="" method="post">
                         {{ form.hidden_tag() }}
                         
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <div class="form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
 
                             {{form.username(class="form-control",width='100',type='text',placeholder='Username', size=32)}}
                             
@@ -21,22 +22,25 @@
                             {% for error in form.username.errors%}
                                 <span style='color: red'>[{{error}}]</span>
                             {%endfor%}
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <div class="form-group input-group">
+                            
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
 
                                 {{form.password(class='form-control',type='password',placeholder='Password',size=32) }}
-                                </div>
-                            
                                 {% for error in form.password.errors%}
                                     <span style='color: red'>[{{error}}]</span>
                                     {%endfor%}
-                                <br>
-                                <div><p>{{ form.remember_me(class='form-check-input')}} {{form.remember_me.label(class='form-check-label')}}</p>
+                        </div>
+                            
+                        <div class="form-check">
                                 
-                                <p>
+                                    {{ form.remember_me(class='')}} {{form.remember_me.label(class='form-check-label')}}
+                            </div>
+                        <div class="form-group">
 
-                                {{form.submit(class='btn btn-success', type='submit')}}</p>
+                                
+
+                                {{form.submit(class='btn btn-primary', type='submit')}}
                                 </div>
                             </form>
                             <div>

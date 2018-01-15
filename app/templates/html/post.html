@@ -1,38 +1,47 @@
-<div class="card card-body">
-	<div class="media" style="margin-left: -10px;">
-	    <figure>
-	        <img class="rounded d-flex mx-2" src="{{post.author.profile_picture}}" width="45px">
-	        <br>
-	        <figcaption >
-	            <div class="text-center">
-	                <a class="fa fa-arrow-up unstyled" href="#"></a>
-	            </div>
-	            <div class="text-center my-1">
-	                <a class="fa fa-circle unstyled" style="font-size: 0.5em"></a>
-	            </div>
-	            <div class="text-center">
-	                <a class="fa fa-arrow-down unstyled" href="#"></a>
-	            </div>
-	        </figcaption>
-	    </figure>
-	    <div class="media-body">
-	        <h6>{{post.author.username}}</h6>
-	        <p><i class="fa fa-calendar-alt"></i><small class="text-muted"> Updated x days ago</small></p>
-	        <div class="media-body">
-				{{ post.body|markdown}}
-	            <ul class="list-inline list-unstyled">
-	                
-	                <li class="list-inline-item"><i class="fa fa-comments"></i> Comments</li>
-	                |
-	                <li class="list-inline-item"><i class="fa fa-tags"></i>Tags:</li>
-	                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Rock</span></a></li>
-	                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">ShitPost</span></a></li>
-	                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Latim</span></a></li>
-	                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Test</span></a></li>
+<div class="card card-outline-danger my-2">
 
-	            </ul>
-	        </div>
-	    </div>
+    <button class="close-icon" data-toggle="tooltip" data-placement="top" title="Hide post" data-effect="fadeOut">
+    	<span class="pull-right clickable" ><i class="fa fa-times"></i></span>
+    </button>
+	<div class="card-body">
+		<div class="media" style="margin-left: -10px;">
+		    <figure>
+		    	<a  href="{{url_for('user', username=post.author.username)}}">
+		        <img class="rounded d-flex mx-2" src="{{post.author.profile_picture}}" width="45px">
+		    	</a>
+		        <br>
+		        <figcaption class="d-flex flex-column text-center justify-content-center">
+		            
+		                <a class="fa fa-arrow-up unstyled" href="#"></a>
+		                <a class="fa fa-circle unstyled my-1" style="font-size: 0.5em"></a>
+		                <a class="fa fa-arrow-down unstyled" href="#"></a>
+		            
+		        </figcaption>
+		    </figure>
+		    <div class="media-body">
+
+		        <h6><a class="ml-1" href="{{ url_for('user', username=post.author.username)}}">{{post.author.username}}</a></h6>
+		        <p><i class="fa fa-calendar-alt"></i><small class="text-muted"> Updated x days ago</small></p>
+		        <div class="media-body">
+					{{ post.body|markdown}}
+		            <ul class="list-inline list-unstyled">
+		                
+		                <li class="list-inline-item"><i class="fa fa-comments"></i> Comments</li>
+		                |
+		                <li class="list-inline-item"><i class="fa fa-tags"></i> Tags:</li>
+		                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Rock</span></a></li>
+		                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">ShitPost</span></a></li>
+		                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Latim</span></a></li>
+		                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Test</span></a></li>
+
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+		{% if post.author == current_user %}
+		<a class="pull-right btn btn-warning" href="{{url_for('delete', id=post.id)}}">Delete</a>
+		{% endif %}
 	</div>
 </div>
+
 

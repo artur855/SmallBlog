@@ -219,7 +219,7 @@ def unfollow(username):
             return redirect(url_for('user', username=username))
         db.session(u)
         db.session.commit()
-        flash("You can't unfollow yourself")
+        flash("You unfollowed {}".format(username), 'success')
         return redirect(url_for('user', username=username))
 
     except IntegrityError:

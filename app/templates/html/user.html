@@ -1,36 +1,60 @@
  
 {% extends "html/base.html" %}
 {% block content %}
-    <div class="page-header">
-        <img src="{{ user.profile_picture }}" width="100" height="100">
-        <br>
-        <br>
-        {% if current_user == user %}
-            <a href="{{url_for('profile', username=user.username)}}">Configurate profile</a>
-        {% elif not current_user.is_following(user) %}
-            <a href="{{url_for('follow', username=user.username)}}">Follow</a>
-        {% else %}
-            <a href="{{url_for('unfollow', username=user.username)}}">Unfollow</a>
-        {% endif %}
-        <br>
-        <br>  
-        <p>{{ user.followers.count() }} followers 
-        </p>
+    <div>
+    <img class="img-thumbnail" src="{{ user.profile_picture }}" width="100" height="100">
+        <div>
+            <p class="badge badge-info">About me: {{user.about_me}}</p>
+            <p class="badge badge-info">Last seen: {{user.last_seen}}</p>
+            <h1 class="badge badge-secondary">{{ user.username }}'s Profile</h1>
+        </div>
+        {% if current_user != user %}
+            {% if not current_user.is_following(user) %}
+                <a class="btn btn-info" href="{{url_for('follow', username=user.username)}}">Follow</a>
+            {% else %}
+                <a class="btn btn-info
+                " href="{{url_for('unfollow', username=user.username)}}">Unfollow</a>
+            {% endif %}
+        {% endif %}        
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" id="followers-tab" data-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">{{ user.followers.count() }} followers</a>
+            </li>
+            {% if user==current_user %}
+            <li class="nav-item">
+                <a class="nav-link" id="config-tab" data-toggle="tab" href="#config" role="tab" aria-controls="config" aria-selected="false">Config</a>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="container tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" >
+                {% for post in user.posts %}
+                    {% include 'html/post.html' %}        
+                {% endfor %}
+                {% if posts.has_prev %}
+                        <a href="{{url_for('user', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
+                {% endif %}
+                {% if posts.has_prev and posts.has_next %}
+                    |
+                {% endif %}
+                {% if posts.has_next %}
+                        <a href="{{url_for('user', page=posts.next_num)}}">Older posts &gt;&gt;</a>
+                {% endif %}
+            </div>
+            <div class="container tab-pane fade" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+                Soon enough......
+            </div>            
+            <div class="container tab-pane fade" id="config" role="tabpanel" aria-labelledby="config-tab">
+                {% include 'html/profile.html' %}               
+            </div>
+        </div>
     </div>
-    <p>About me: {{user.about_me}}</p>
-    <p>Last seen: {{user.last_seen}}</p>
-    <h1>{{ user.username }}'s Profile</h1>
-    {% for post in user.posts %}
-        {% include 'html/post.html' %}        
-    {% endfor %}
-    {% if posts.has_prev %}
-            <a href="{{url_for('user', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
-    {% endif %}
-    {% if posts.has_prev and posts.has_next %}
-        |
-    {% endif %}
-    {% if posts.has_next %}
-            <a href="{{url_for('user', page=posts.next_num)}}">Older posts &gt;&gt;</a>
-    {% endif %}
+   
+    
+    
 {% endblock %}
  
