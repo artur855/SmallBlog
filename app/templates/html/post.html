@@ -1,8 +1,9 @@
-<div class="card card-outline-danger my-2">
+<div class="card card-outline-danger bg-light my-2">
 
-    <button class="close-icon" data-toggle="tooltip" data-placement="top" title="Hide post" data-effect="fadeOut">
-    	<span class="pull-right clickable" ><i class="fa fa-times"></i></span>
-    </button>
+
+    <button type="button" class="close-icon" data-toggle="tooltip" data-placement="top" title="Hide post">
+    	<span class="pull-right clickable" ><i class="fa fa-times"></i></span>  		
+	</button>
 	<div class="card-body">
 		<div class="media" style="margin-left: -10px;">
 		    <figure>
@@ -24,7 +25,9 @@
 		        <p><i class="fa fa-calendar-alt"></i><small class="text-muted"> Updated x days ago</small></p>
 		        <div class="media-body">
 					{{ post.body|markdown}}
-		            <ul class="list-inline list-unstyled">
+		            
+		        </div>
+		        <ul class="list-inline list-unstyled">
 		                
 		                <li class="list-inline-item"><i class="fa fa-comments"></i> Comments</li>
 		                |
@@ -34,8 +37,7 @@
 		                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Latim</span></a></li>
 		                <li class="list-inline-item"><a href="#"><span class="badge badge-primary">Test</span></a></li>
 
-		            </ul>
-		        </div>
+				</ul>
 		    </div>
 		</div>
 		{% if post.author == current_user %}

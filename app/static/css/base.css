@@ -1,5 +1,9 @@
 /* base.css */
+body{
+    background-color: #DDD;
 
+
+}
 a.unstyled{
     text-decoration: none;
     color: inherit;"
@@ -20,4 +24,4 @@ button.close-icon {
 	border:none;
 	background:none;
 }
-
+ 

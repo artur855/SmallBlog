@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_dotenv import DotEnv
-import flask_debugtoolbar
 import logging
 from logging.handlers import SMTPHandler
 from flask_migrate import Migrate
@@ -23,7 +22,6 @@ db = SQLAlchemy(aplication)
 misaka = Misaka(aplication, math=True, highlight=True)
 aplication.config.from_object(Config)
 migrate = Migrate(aplication, db)
-toolbar = flask_debugtoolbar.DebugToolbarExtension(aplication)
 login = LoginManager(aplication)
 login.login_view = 'login'
 mail = Mail(aplication)

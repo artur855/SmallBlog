@@ -38,7 +38,7 @@ def index(page=1):
         except:
             flash('A error has occured', 'error')
             db.session.rollback()
-    posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False).items
+    posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('html/index.html', title='Home Page', form=form, posts=posts)
 
 
@@ -53,25 +53,15 @@ def logout():
     return redirect(url_for('login'))
 
 
-@aplication.route('/user/<username>/profile')
-@login_required
-def profile(username):
-    user = User.query.filter_by(username=username).first()
-    if user != current_user:
-        flash("You cant access another user edit page", 'warning')
-        return redirect(url_for('profile', username=current_user.username))
-    return render_template('html/profile.html', title='{} Profile'.format(username))
-
-
 @aplication.route('/user/<username>/profile/change/password', methods=['GET', 'POST'])
 @login_required
 def change_user_password(username):
     user = User.query.filter_by(username=username).first()
     if user != current_user:
-        return redirect(url_for('edit'))
+        return redirect(url_for('edit', username=username))
     if not user.password_hash:
         flash('You dont have a password!!', 'warning')
-        return redirect(url_for('profile', username=user.username))
+        return redirect(url_for('user', username=user.username))
     form = ChangePasswordForm()
     if form.validate_on_submit():
         if not user.check_password(form.old_password):
@@ -82,7 +72,7 @@ def change_user_password(username):
             db.session.add(user)
             db.session.commit()
             flash('Password changed with success!', 'success')
-            return redirect(url_for('profile', username=user.username))
+            return redirect(url_for('user', username=user.username))
         except IntegrityError:
             flash('A error has ocurred!! Contact a admin.', 'error')
 
@@ -93,8 +83,11 @@ def change_user_password(username):
 @login_required
 def edit(username):
     user = User.query.filter_by(username=username).first()
+    if not user:
+        flash('User not found', 'error')
+        return redirect(url_for('index'))
     if user != current_user:
-        return redirect(url_for('edit'))
+        return redirect(url_for('edit', username=username))
     form = ProfileForm()
     if form.validate_on_submit():
         user.username = form.username.data
@@ -103,7 +96,7 @@ def edit(username):
         db.session.add(user)
         db.session.commit()
         flash('Modifications made with sucess', 'success')
-        return redirect(url_for('profile', username=username))
+        return redirect(url_for('user', username=user.username))
     elif request.method == 'GET':
         form.username.data = user.username
         form.about_me.data = user.about_me
@@ -118,13 +111,14 @@ def edit(username):
 @login_required
 def user(username=None, page=1):
     if username == current_user.username or username == None:
-        posts = current_user.posts.paginate(page, POSTS_PER_PAGE, False)
+        posts = current_user.posts.paginate(
+            page, POSTS_PER_PAGE, False)
         return render_template('html/user.html', user=current_user, posts=posts)
     else:
         user = User.query.filter_by(username=username).first()
         if not user:
             flash('User {} not found.'.format(username), 'error')
-            redirect(url_for('index'))
+            return redirect(url_for('index'))
         posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
         return render_template('html/user.html', user=user, posts=posts)
 
@@ -308,14 +302,14 @@ def reset():
             if current_user.email_confirmed:
                 send_password_reset_email(current_user.email)
                 flash('Please check your email for a password reset link', 'success')
-                return redirect(url_for('profile', username=current_user.username))
+                return redirect(url_for('user', username=current_user.username))
             else:
                 flash(
                     'Your email address must be confirmed before changing the password!', 'error')
-            return redirect(url_for('profile', username=current_user.username))
+            return redirect(url_for('user', username=current_user.username))
         except:
             flash('A error has occured', 'error')
-            return redirect(url_for('profile', username=current_user.username))
+            return redirect(url_for('user', username=current_user.username))
 
     if form.validate_on_submit():
         try:

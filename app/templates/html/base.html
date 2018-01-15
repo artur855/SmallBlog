@@ -18,57 +18,53 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-light bg-light" role="navigation"> 
-	        <a class="navbar-brand navbar-text" href="{{url_for('index')}}">
-	             <img src="{{url_for('static', filename='icons/arthurzera.jpg')}}" width="30px">
-	            Arthurzera
-	        </a>
-            <ul class="navbar-nav mr-auto mt-lg-0">
-                {% if current_user.is_anonymous %}
-                <li>
-                	<a class="navbar-text nav-item active" href="{{ url_for('login') }}">
-                		<i class="glyphicon glyphicon-log-in" style="margin-right: 5px; margin-left: -10px;"></i>Login
-                	</a>
-                </li>
-                {% else %}
-                <li>
-                	<a class="navbar-text nav-item active" href="{{ url_for('user', username = current_user.username) }}">
-                            {{current_user.username}}
-                            <img  align="right" style=" margin-bottom: 40px;margin-top: -10px; margin-left: 20px; color: white;" src="{{current_user.profile_picture}}" width = "40" height="40">
-                    </a>
-                </li>
-                <li>
-                	<a class="navbar-text nav-item active" href="{{ url_for('logout') }}">
-                		Logout
-                	</a>
-                </li>
-                {% endif %}
-                </ul>
-                <form class="navbar-form navbar-right">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <i class="fa fa-search"></i>
-                                </button>
-                        </div>
-                    </div>
-                </form>
-            
-        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+                <img alt='Arthurzera icon' src="{{url_for('static', filename='icons/arthurzera.jpg')}}" width="30px">
+                Arthurzera
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> 
 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% if current_user.is_anonymous%}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Login <span class="sr-only">(current)</span></a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('user', username=username)}}">
+                                {{current_user.username}}
+                                <img src="{{current_user.profile_picture}}" width="30px" alt="User profile picture">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+                            
+                        </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
     </header>
+    <br>
     <div class="container">
 
 
         {% for error in get_flashed_messages(category_filter=["error"]) %}
-        <p class=" alert alert-danger alert-dismissable fade in">{{ error }}</p>
+        <p class=" alert alert-danger alert-dismissable fade show">{{ error }}</p>
         {% endfor %} {% for warning in get_flashed_messages(category_filter=["warning"]) %}
-        <p class=" alert alert-warning alert-dismissable fade in">{{ warning }}</p>
+        <p class=" alert alert-warning alert-dismissable fade show">{{ warning }}</p>
         {% endfor %} {% for info in get_flashed_messages(category_filter=["info"]) %}
-        <p class=" alert alert-info alert-dismissable fade in">{{ info }}</p>
+        <p class=" alert alert-info alert-dismissable fade show">{{ info }}</p>
         {% endfor %} {% for message in get_flashed_messages(category_filter=["success"])%}
-        <p class=" alert alert-success alert-dismissable fade in">{{ message }}</p>
+        <p class=" alert alert-success alert-dismissable fade show">{{ message }}</p>
         {% endfor %}
     </div>
 
