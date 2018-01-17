@@ -4,7 +4,7 @@ from app import aplication
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-POSTS_PER_PAGE = 3
+POSTS_PER_PAGE = 5
 
 
 class Config:

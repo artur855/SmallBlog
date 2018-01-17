@@ -16,22 +16,25 @@
 
     </form>
     <div>
-        <ul class="list-group">
-        {% for post in posts.items %}
-                <li class="list-group-item">
-                {% include 'html/post.html' %}
-                </li>
-        {% endfor %}
-        {% if posts.has_prev %}
-            <a href="{{url_for('index', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
-        {% endif %}
-        {% if posts.has_prev and posts.has_next %}
-        |
-        {% endif %}
-        {% if posts.has_next %}
-            <a href="{{url_for('index', page=posts.next_num)}}">Older posts &gt;&gt;</a>
-        {% endif %}
-        </ul>
+        <div>   
+            {% for post in posts.items %}
+                {% include 'html/post.html' %}        
+            {% endfor %}
+        </div>
+        <nav aria-label="Pages">
+            <ul class="pagination justify-content-center">
+            {% if posts.has_prev %}
+                <li class="page-item"><a class="page-link" href="{{url_for('index',page=posts.prev_num)}}">&laquo;</a></li>
+            {% endif %}
+                <li class="page-item"><a class="page-link" href="{{url_for('index', page=1)}}">1</a></li>
+            {% for i in range(2, total+1) %}
+                <li class="page-item"><a class="page-link" href="{{url_for('index', page=i)}}">{{i}}</a></li>
+            {% endfor %}
+            {% if posts.has_next %}
+                <li class="page-item"><a class="page-link" href="{{url_for('index', page=posts.next_num)}}">&raquo;</a></li>
+            {% endif %}                   
+            </ul>
+        </nav>
     </div>
 {% endblock%}
     

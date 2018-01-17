@@ -4,6 +4,7 @@ from flask_mail import Message
 from sqlalchemy.exc import IntegrityError
 from .oauth import *
 from flask import Markup
+from math import ceil
 from app import aplication, db, login, mail
 from app.forms import *
 from .models import *
@@ -12,6 +13,7 @@ from werkzeug.urls import url_parse
 from urllib import parse
 from urllib.parse import urljoin
 from datetime import datetime
+from operator import attrgetter
 from threading import Thread
 from config import POSTS_PER_PAGE
 
@@ -24,7 +26,6 @@ def load_user(id):
 @aplication.route('/', methods=['GET', 'POST'])
 @aplication.route('/index', methods=['GET', 'POST'])
 @aplication.route('/index/<int:page>', methods=['GET', 'POST'])
-@login_required
 def index(page=1):
     form = PostForm()
     if form.validate_on_submit():
@@ -38,8 +39,17 @@ def index(page=1):
         except:
             flash('A error has occured', 'error')
             db.session.rollback()
-    posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
-    return render_template('html/index.html', title='Home Page', form=form, posts=posts)
+    if current_user.is_authenticated:
+        posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+
+        total = ceil(current_user.posts.order_by(
+            Post.timestamp.desc()).count() / POSTS_PER_PAGE)
+    else:
+        posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+            page, POSTS_PER_PAGE, False)
+        total = ceil(Post.query.order_by(
+            Post.timestamp.desc()).count() / POSTS_PER_PAGE)
+    return render_template('html/index.html', title='Home Page', form=form, posts=posts, total=total)
 
 
 @aplication.route('/logout')
@@ -114,16 +124,21 @@ def edit(username):
 @login_required
 def user(username=None, page=1):
     if username == current_user.username or username == None:
-        posts = current_user.posts.paginate(
-            page, POSTS_PER_PAGE, False)
-        return render_template('html/user.html', user=current_user, posts=posts)
+        posts = current_user.posts.order_by(
+            Post.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
+        total = ceil(current_user.posts.order_by(
+            Post.timestamp.desc()).count() / POSTS_PER_PAGE)
+        return render_template('html/user.html', user=current_user, posts=posts, total=total)
     else:
         user = User.query.filter_by(username=username).first()
         if not user:
             flash('User {} not found.'.format(username), 'error')
             return redirect(url_for('index'))
-        posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
-        return render_template('html/user.html', user=user, posts=posts)
+        posts = user.posts.order_by(
+            Post.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
+        total = ceil(user.posts.order_by(
+            Post.timestamp.desc()).count() / POSTS_PER_PAGE)
+        return render_template('html/user.html', user=user, posts=posts, total=total)
 
 
 @aplication.route('/login', methods=['GET', 'POST'])

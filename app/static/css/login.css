@@ -1,0 +1,12 @@
+{% for post in posts.items %}
+                    {% include 'html/post.html' %}        
+                {% endfor %}
+                {% if posts.has_prev %}
+                        <a href="{{url_for('user', page=posts.prev_num)}}">&lt;&lt;Newer posts</a>
+                {% endif %}
+                {% if posts.has_prev and posts.has_next %}
+                    |
+                {% endif %}
+                {% if posts.has_next %}
+                        <a href="{{url_for('user', page=posts.next_num)}}">Older posts &gt;&gt;</a>
+                {% endif %}

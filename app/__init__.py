@@ -10,10 +10,6 @@ from flask_migrate import Migrate
 from flask_misaka import Misaka
 aplication = Flask(__name__)
 credentials = None
-# mail_handler = SMTPHandler((Config.MAIL_SERVER, Config.MAIL_PORT), 'no-reply@' +
-#                            Config.MAIL_SERVER, Config.ADMINS, 'microblog failure', credentials)
-# mail_handler.setLevel(logging.ERROR)
-# aplication.logger.addHandler(mail_handler)
 env = DotEnv()
 env.init_app(aplication, env_file=os.path.join(
     os.getcwd(), '.env'), verbose_mode=True)
