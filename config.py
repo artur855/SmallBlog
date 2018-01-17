@@ -1,7 +1,7 @@
 import os
 import ast
 from app import aplication
-basedir = os.path.abspath(os.path.dirname(__file__))
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
 POSTS_PER_PAGE = 5
@@ -17,3 +17,7 @@ class Config:
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
+    UPLOADS_DEFAULT_DEST = BASEDIR + '/app/static/img/'
+    UPLOADS_DEFAULT_URL = 'http://localhost:5000/static/img/'
+    UPLOADED_IMAGES_DEST = BASEDIR + '/app/static/img/'
+    UPLOADED_IMAGES_URL = 'http://localhost:5000/static/img/'

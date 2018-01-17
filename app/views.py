@@ -100,12 +100,14 @@ def edit(username):
         return redirect(url_for('edit', username=username))
     form = ProfileForm()
     if form.validate_on_submit():
-        if User.query.filter_by(username=form.username.data).scalar():
+        if form.username.data != current_user.username and User.query.filter_by(username=form.username.data).scalar():
             flash('Username already exists', 'error')
-            return redirect(url('edit', username=username))
+            return redirect(url_for('edit', username=username))
         user.username = form.username.data
         user.about_me = form.about_me.data
-        user.profile_picture = form.profile_picture.data
+        user.profile_picture_name = images.save(
+            request.files['profile_picture'])
+        user.profile_picture_url = images.url(user.profile_picture_name)
         db.session.add(user)
         db.session.commit()
         flash('Modifications made with sucess', 'success')
@@ -113,7 +115,6 @@ def edit(username):
     elif request.method == 'GET':
         form.username.data = user.username
         form.about_me.data = user.about_me
-        form.profile_picture.data = user.profile_picture
 
     return render_template('html/user_edit.html', title='{} Edit Profile'.format(username), form=form)
 
@@ -435,8 +436,9 @@ def oauth_callback(provider):
 
                 if email and not user.email:
                     user.email = email
-                if user.profile_picture == '/static/icons/profile_icons/default.png' and profile_picture:
+                if user.profile_picture_url == '/static/icons/profile_icons/default.png' and profile_picture:
                     user.profile_picture = profile_picture
+                    user.profile_picture_name = provider + 'profile'
                 db.session.add(user)
                 db.session.commit()
                 db.session.add(provider)
@@ -448,9 +450,10 @@ def oauth_callback(provider):
         user = User.query.filter_by(username=username).first()
         email_sent = False
         if not user:
-            user = User(username=username, profile_picture=profile_picture)
-        if user.profile_picture == '/static/icons/profile_icons/default.png':
-            user.profile_picture = profile_picture
+            user = User(username=username, profile_picture_url=profile_picture)
+        if user.profile_picture_url == '/static/icons/profile_icons/default.png':
+            user.profile_picture_url = profile_picture
+            user.profile_picture_name = provider + 'profile'
         if (email or user.email) and not user.email_confirmed:
             user.email = email
             email_sent = True

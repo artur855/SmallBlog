@@ -2,7 +2,7 @@
 {% extends "html/base.html" %}
 {% block content %}
     <div>
-    <img class="img-thumbnail" src="{{ user.profile_picture }}" width="100" height="100">
+    <img class="img-thumbnail" src="{{ user.profile_picture_url }}" width="100" height="100">
         <div>
             <p class="badge badge-info">About me: {{user.about_me}}</p>
             <p class="badge badge-info">Last seen: {{user.last_seen}}</p>

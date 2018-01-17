@@ -5,10 +5,10 @@
 	<div class="container">
 	    
     
-		<form method="post" name="edit">
+		<form method="post" enctype="multipart/form-data" name="edit">
 			{{form.hidden_tag()}}
 
-			<img src="{{current_user.profile_picture}}" alt="Profile Picture" class="img-thumbnail"><br><br>		
+			<img src="{{current_user.profile_picture_url}}" alt="Profile Picture" class="img-thumbnail"><br><br>		
 			
 			<div class="form-group">
 			{{form.profile_picture.label}}

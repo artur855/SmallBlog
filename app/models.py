@@ -24,7 +24,8 @@ class User(UserMixin, db.Model):
     email_confirmed_on = db.Column(db.DateTime, nullable=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     password_hash = db.Column(db.String(128))
-    profile_picture = db.Column(
+    profile_picture_name = db.Column(db.String(50), default='default')
+    profile_picture_url = db.Column(
         db.String(300), default='/static/icons/profile_icons/default.png')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)

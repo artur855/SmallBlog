@@ -8,6 +8,8 @@ import logging
 from logging.handlers import SMTPHandler
 from flask_migrate import Migrate
 from flask_misaka import Misaka
+from flask_uploads import UploadSet, IMAGES, configure_uploads
+
 aplication = Flask(__name__)
 credentials = None
 env = DotEnv()
@@ -21,6 +23,7 @@ migrate = Migrate(aplication, db)
 login = LoginManager(aplication)
 login.login_view = 'login'
 mail = Mail(aplication)
-
+images = UploadSet('images', IMAGES)
+configure_uploads(aplication, images)
 
 from app import views, models

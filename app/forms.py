@@ -1,4 +1,6 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from app import images
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import ValidationError, Email, EqualTo, DataRequired, Length
 from app.models import User
@@ -19,8 +21,8 @@ class PostForm(FlaskForm):
 class ProfileForm(FlaskForm):
     username = StringField('Change Username')
     about_me = TextAreaField('About Me', validators=[Length(min=0, max=300)])
-    profile_picture = StringField(
-        'Profile Picture url')
+    profile_picture = FileField(
+        'Profile Picture url', validators=[FileRequired(), FileAllowed(images, 'Images only')])
     submit = SubmitField('Save changes')
 
 

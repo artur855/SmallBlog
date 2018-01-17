@@ -31,13 +31,13 @@
                 <ul class="navbar-nav mr-auto">
                     {% if current_user.is_anonymous%}
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Login <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{url_for('login')}}">Login</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('user', username=username)}}">
                                 {{current_user.username}}
-                                <img src="{{current_user.profile_picture}}" width="30px" alt="User profile picture">
+                                <img src="{{current_user.profile_picture_url}}" width="30px" alt="User profile picture">
                             </a>
                         </li>
                         <li class="nav-item">
