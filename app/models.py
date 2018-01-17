@@ -76,6 +76,20 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post: {}>'.format(self.body)
 
+    def time_passed(self):
+        passed = datetime.now() - self.timestamp
+        totalseconds = passed.total_seconds()
+        print(totalseconds)
+        if totalseconds < 3600:
+            result = round(totalseconds / 60)
+            return '{} {min}'.format(result, min='mins' if result > 1 else 'min')
+        elif 3600 < totalseconds < 86400:
+            result = round(totalseconds / 3600)
+            return '{} {hour}'.format(result, hour='hours' if result > 1 else 'hour')
+        else:
+            result = round(totalseconds / 86400)
+            return '{} {day}'.format(result, day='days' if result > 1 else 'day')
+
 
 class SocialId(db.Model):
     id = db.Column(db.Integer, primary_key=True)
