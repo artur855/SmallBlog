@@ -76,10 +76,10 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post: {}>'.format(self.body)
 
+    @property
     def time_passed(self):
         passed = datetime.now() - self.timestamp
         totalseconds = passed.total_seconds()
-        print(totalseconds)
         if totalseconds < 3600:
             result = round(totalseconds / 60)
             return '{} {min}'.format(result, min='mins' if result > 1 else 'min')

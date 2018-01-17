@@ -22,7 +22,7 @@
 		    <div class="media-body">
 
 		        <h6><a class="ml-1" href="{{ url_for('user', username=post.author.username)}}">{{post.author.username}}</a></h6>
-		        <p><i class="fa fa-calendar-alt"></i><small class="text-muted"> Updated {{post.time_passed()}} ago</small></p>
+		        <p><i class="fa fa-calendar-alt"></i><small class="text-muted"> Updated {{post.time_passed}} ago</small></p>
 		        <div class="media-body">
 					{{ post.body|markdown}}
 		            

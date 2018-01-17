@@ -90,6 +90,9 @@ def edit(username):
         return redirect(url_for('edit', username=username))
     form = ProfileForm()
     if form.validate_on_submit():
+        if User.query.filter_by(username=form.username.data).scalar():
+            flash('Username already exists', 'error')
+            return redirect(url('edit', username=username))
         user.username = form.username.data
         user.about_me = form.about_me.data
         user.profile_picture = form.profile_picture.data
@@ -154,6 +157,12 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
+            if User.query.filter_by(username=form.username.data).scalar():
+                flash('Username already exists', 'error')
+                return render_template('html/register.html', title='Register', form=form)
+            if User.query.filter_by(email=form.email.data).scalar():
+                flash('Email already exists', 'error')
+                return render_template('html/register.html', title='Register', form=form)
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
             user.email_confirmation_sent_on = datetime.now()
