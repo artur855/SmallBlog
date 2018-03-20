@@ -4,7 +4,6 @@ import json
 
 
 class OAuthSignIn:
-    """docstring for OAuthSignIn"""
     providers = None
 
     def __init__(self, provider_name):
@@ -34,7 +33,6 @@ class OAuthSignIn:
 
 
 class FacebookSingIn(OAuthSignIn):
-    """docstring for FacebookSingIn"""
 
     def __init__(self):
         super(FacebookSingIn, self).__init__('facebook')
@@ -70,8 +68,8 @@ class FacebookSingIn(OAuthSignIn):
         return (
             'facebook$' + me['id'],
             me.get('email').split('@')[0],  # Facebook does not provide
-                                            # username, so the email's user
-                                            # is used instead
+            # username, so the email's user
+            # is used instead
             me.get('email'), me.get('picture')['data']['url']
         )
 
@@ -153,7 +151,7 @@ class GoogleSingIn:
         return (
             'facebook$' + me['id'],
             me.get('email').split('@')[0],  # Facebook does not provide
-                                            # username, so the email's user
-                                            # is used instead
+            # username, so the email's user
+            # is used instead
             me.get('email'), me.get('picture')['data']['url']
         )

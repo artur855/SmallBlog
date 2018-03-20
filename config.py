@@ -9,7 +9,7 @@ POSTS_PER_PAGE = 5
 
 class Config:
     OAUTH_CREDENTIALS = ast.literal_eval(
-        aplication.config['OAUTH_CREDENTIALS'])
+       aplication.config['OAUTH_CREDENTIALS'])
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     debug = True
     WTF_CSRF_ENABLED = True
