@@ -1,8 +1,8 @@
-"""Add tables
+"""test
 
-Revision ID: 9ae2be9ea047
+Revision ID: 53c0425b7822
 Revises: 
-Create Date: 2018-01-11 19:42:42.895109
+Create Date: 2018-04-25 21:46:32.585030
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9ae2be9ea047'
+revision = '53c0425b7822'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,16 +26,24 @@ def upgrade():
     sa.Column('email_confirmed', sa.Boolean(), nullable=True),
     sa.Column('email_confirmed_on', sa.DateTime(), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
-    sa.Column('profile_picture', sa.String(length=300), nullable=True),
+    sa.Column('profile_picture_name', sa.String(length=50), nullable=True),
+    sa.Column('profile_picture_url', sa.String(length=300), nullable=True),
     sa.Column('about_me', sa.String(length=140), nullable=True),
     sa.Column('last_seen', sa.DateTime(), nullable=True),
+    sa.Column('registered_on', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
+    op.create_table('followers',
+    sa.Column('follower_id', sa.Integer(), nullable=True),
+    sa.Column('followed_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['followed_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['follower_id'], ['user.id'], )
+    )
     op.create_table('post',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('body', sa.String(length=300), nullable=True),
+    sa.Column('body', sa.String(length=500), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
@@ -58,6 +66,7 @@ def downgrade():
     op.drop_table('social_id')
     op.drop_index(op.f('ix_post_timestamp'), table_name='post')
     op.drop_table('post')
+    op.drop_table('followers')
     op.drop_index(op.f('ix_user_username'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')

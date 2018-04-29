@@ -19,8 +19,4 @@ var/
 .installed.cfg
 *.egg
 
-# Virtual Enviroment
-env
-.env
-venv
 

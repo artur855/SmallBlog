@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Site to learn full-stack development and git">
@@ -9,7 +10,10 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-    {% if title %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/scripts.js')}}"></script> {% if title %}
     <title>{{ title }}</title>
     {% else %}
     <title>Welcome to Arthurzera</title>
@@ -20,30 +24,30 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="{{url_for('index')}}">
-                <img alt='Arthurzera icon' src="{{url_for('static', filename='icons/arthurzera.jpg')}}" width="30px">
-                Arthurzera
+                <img alt='Arthurzera icon' src="{{url_for('static', filename='icons/arthurzera.jpg')}}" width="30px"> Arthurzera
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button> 
+            </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     {% if current_user.is_anonymous%}
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{url_for('login')}}">Login</a>
-                        </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{url_for('login')}}">Login</a>
+                    </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('user', username=username)}}">
-                                {{current_user.username}}
-                                <img src="{{current_user.profile_picture_url}}" width="30px" alt="User profile picture">
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
-                            
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('user', username=username)}}">
+                            {{current_user.username}}
+                            <img src="{{current_user.profile_picture_url}}" width="30px" alt="User profile picture">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+
+                    </li>
                     {% endif %}
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -73,15 +77,14 @@
     </div>
     <footer style="padding-bottom:10px;">
         <div class="container">
-            <span class="text-muted">Admin: Arthur Gonçalves Azevedo</span><br>
-            <span class="text-muted">Contact email: arthuzeramicroblog@gmail.com</span><br>
+            <span class="text-muted">Admin: Arthur Gonçalves Azevedo</span>
+            <br>
+            <span class="text-muted">Contact email: arthuzeramicroblog@gmail.com</span>
+            <br>
             <span class="text-muted">Phone: +55 79 4002-8922</span>
         </div>
     </footer>
 
 </body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="{{url_for('static', filename='js/scripts.js')}}"></script>
+
 </html>
